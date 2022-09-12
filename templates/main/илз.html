@@ -1,0 +1,12 @@
+addImageFormBtn.addEventListener("click", function (event) {
+    event.preventDefault();
+
+    const newImageForm = imageForm[0].cloneNode(true);
+    const formRegex = RegExp(`form-(\\d){1}-`, 'g');
+
+    formCount++;
+
+    newImageForm.innerHTML = newImageForm.innerHTML.replace(formRegex, `listy_set-${formCount}-`);
+    mainForm.insertBefore(newImageForm, submitFormBtn);
+    totalForms.setAttribute('value', `${formCount + 1}`);
+});

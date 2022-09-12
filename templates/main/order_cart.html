@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заказ картриджей</title>
+    {% load static %}
+    {% load crispy_forms_tags %}
+    {% load tailwind_filters %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/stylesheet.css'%}" type="text/css">
+<style>
+.center-div
+{
+     position: absolute;
+     margin: auto;
+     top: 0;
+     right: 0;
+     bottom: 0;
+     left: 0;
+     width: 600px;
+     height: 600px;
+}
+</style>
+</head>
+<body>
+  <div class="container-sm center-div">
+      <h2>Заказ картриджей</h2>
+      <p></p>
+
+        <form role="form" id="form-container" method="POST">
+                {% csrf_token %}
+            <div class="row">
+                <div class="col">
+                    {{ form.surname|as_crispy_field }}
+                </div>
+                <div class="col">
+                        {{ form.depart|as_crispy_field }}
+                </div>
+                <p></p>
+            </div>
+                {{formset.management_form}}
+                {% for form in formset %}
+                    <div class="form row">
+                        <div class="col-6">
+                            {{ form.title|as_crispy_field }}
+                        </div>
+                        <div class="col-3">
+                             {{ form.numbers|as_crispy_field }}
+                        </div>
+                               {% endfor %}
+                        <div class="col align-self-end ">
+                            <button class="btn btn-danger align-self-end delete-image-form">-</button>
+                        </div>
+                        <p></p>
+                    </div>
+                    <button id="add-form" class="btn col-1 btn-primary">+</button>
+                    <button type="button" class="btn col-3 btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Создать заявку</button>
+
+     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Подтверждение</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Вы уверены, что хотите создать заявку?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        <button type="submit" class="btn btn-success">Создать заявку</button>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+  </form>
+    <script>
+const imageForm = document.getElementsByClassName("form");
+const mainForm = document.querySelector("#form-container");
+const addButton = document.querySelector("#add-form");
+const totalForms = document.querySelector("#id_listy_set-TOTAL_FORMS");
+
+let formCount = imageForm.length - 1;
+
+function updateForms() {
+    let count = 0;
+    for (let form of imageForm) {
+        const formRegex = RegExp(`listy_set-(\\d){1}-`, 'g');
+        form.innerHTML = form.innerHTML.replace(formRegex, `listy_set-${count++}-`)
+    }
+}
+
+addButton.addEventListener('click', addForm)
+function addForm(e){
+    e.preventDefault()
+
+    let newForm = imageForm[0].cloneNode(true) //Clone the bird form
+    let formRegex = RegExp(`listy_set-(\\d){1}-`,'g') //Regex to find all instances of the form number
+
+    formCount++ //Increment the form number
+    newForm.innerHTML = newForm.innerHTML.replace(formRegex, `listy_set-${formCount}-`) //Update the new form to have the correct form number
+    mainForm.insertBefore(newForm, addButton) //Insert the new form at the end of the list of forms
+
+    totalForms.setAttribute('value', `${formCount+1}`) //Increment the number of total forms in the form management
+    }
+
+mainForm.addEventListener("click", function (event) {
+    if (event.target.classList.contains("delete-image-form") && formCount > 0 ) {
+        event.preventDefault();
+        event.target.parentElement.parentElement.remove();
+        formCount--;
+        updateForms();
+        totalForms.setAttribute('value', `${formCount + 1}`);
+    }
+});
+    </script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
+    </body>
+</html>
