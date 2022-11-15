@@ -15,11 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from main.views import CartAddView, get_test, success
+from main.views import CartAddView, success, export
 
 urlpatterns = [
     path('', CartAddView.as_view(), name='create_order'),
-    path('add/', get_test, name='add_cart'),
+    path('export/', export, name='export'),
     path('success/', success, name='success'),
     path('admin/', admin.site.urls),
 ]

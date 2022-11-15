@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-=j5gvd&8mj6)2tllp_zk8alf$gr!7mbu2^x!45p*v7iqzlvf0j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_tailwind',
     'import_export',
+    'xlwt',
 ]
 
 MIDDLEWARE = [
@@ -132,7 +133,3 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
-
-# STATICFILES_DIRS = [
-#    os.path.join(BASE_DIR, "static"),
-# ]

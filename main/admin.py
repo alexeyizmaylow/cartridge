@@ -21,12 +21,9 @@ class UserResource(resources.ModelResource):
     date = Field(attribute='author__date', column_name='Дата заявки')
 
 
-
-
-
 class ListyAdmin(ImportExportModelAdmin):
     resource_class = UserResource
 
 
 admin.site.register(Author, AuthorAdmin)
-admin.site.register(Listy, ListyAdmin)
+
